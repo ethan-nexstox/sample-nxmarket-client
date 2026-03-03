@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "rm .env.development.local",
     "dev": "next dev -p 3074",
+    "prestg": "cp .env.stg .env.development.local",
+    "stg": "next dev -p 3074",
     "build": "next build && cp public/404.html out/404.html",
     "start": "next start",
     "lint": "eslint"

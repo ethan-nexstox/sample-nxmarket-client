@@ -32,6 +32,11 @@ export async function POST(request: NextRequest) {
     const clientSecret = process.env.OAUTH2_CLIENT_SECRET
     const redirectUri = process.env.NEXT_PUBLIC_OAUTH2_REDIRECT_URI
 
+    console.log("💁 tokenEndpoint:", tokenEndpoint)
+    console.log("💁 clientId:", clientId)
+    console.log("💁 clientSecret:", clientSecret)
+    console.log("💁 redirectUri:", redirectUri)
+
     if (!tokenEndpoint || !clientId || !clientSecret || !redirectUri) {
       console.error("Missing OAuth2 configuration")
       return NextResponse.json(
