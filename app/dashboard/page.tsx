@@ -26,7 +26,7 @@ interface ProfileInfo {
 }
 
 // Here is the documentation of the resource server API to get full user info
-// https://staging-admin.apedax.com/docs/#tag/user-controller/operation/myProfile
+// https://staging-admin.staging.nxmarket.com/docs/#tag/user-controller/operation/myProfile
 
 export default function Dashboard() {
   const router = useRouter()
