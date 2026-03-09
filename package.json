@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "rm .env.development.local",
+    "predev": "rm -f .env.development.local",
     "dev": "next dev -p 3074",
     "prestg": "cp .env.stg .env.development.local",
     "stg": "next dev -p 3074",
