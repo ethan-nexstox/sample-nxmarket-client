@@ -4,10 +4,11 @@ import { useState } from "react"
 
 interface RefreshTokenButtonProps {
   onTokenRefreshed?: (newAccessToken: string) => void
+  onRefreshTokenUpdate?: (newRefreshToken: string) => void
   refreshToken: string
 }
 
-export function RefreshTokenButton({ onTokenRefreshed, refreshToken }: RefreshTokenButtonProps) {
+export function RefreshTokenButton({ onTokenRefreshed, refreshToken, onRefreshTokenUpdate }: RefreshTokenButtonProps) {
   const [refreshing, setRefreshing] = useState(false)
   const [refreshError, setRefreshError] = useState<string | null>(null)
   const [refreshSuccess, setRefreshSuccess] = useState<string | null>(null)
@@ -24,6 +25,7 @@ export function RefreshTokenButton({ onTokenRefreshed, refreshToken }: RefreshTo
 
       const tokenEndpoint = process.env.NEXT_PUBLIC_OAUTH2_TOKEN_ENDPOINT
       const clientId = process.env.NEXT_PUBLIC_OAUTH2_CLIENT_ID
+      const clientSecret = process.env.NEXT_PUBLIC_OAUTH2_CLIENT_SECRET
 
       if (!tokenEndpoint || !clientId) {
         throw new Error("OAuth2 configuration is missing")
@@ -38,6 +40,9 @@ export function RefreshTokenButton({ onTokenRefreshed, refreshToken }: RefreshTo
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+
+          // Basic Authentication type for this client
+          "Authorization": `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
         },
         body: tokenParams.toString(),
       })
@@ -63,8 +68,12 @@ export function RefreshTokenButton({ onTokenRefreshed, refreshToken }: RefreshTo
       setRefreshSuccess("Access token refreshed successfully!")
 
       // Notify parent component
-      if (onTokenRefreshed) {
+      if (typeof onTokenRefreshed == 'function') {
         onTokenRefreshed(data.access_token)
+      }
+
+      if (typeof onRefreshTokenUpdate == 'function') {
+        onRefreshTokenUpdate(data.refresh_token)
       }
 
       // Clear success message after 3 seconds

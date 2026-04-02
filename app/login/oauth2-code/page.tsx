@@ -130,6 +130,7 @@ async function exchangeCodeForTokens(
 ): Promise<TokenResponse> {
   const tokenEndpoint = process.env.NEXT_PUBLIC_OAUTH2_TOKEN_ENDPOINT!
   const clientId = process.env.NEXT_PUBLIC_OAUTH2_CLIENT_ID!
+  const clientSecret = process.env.NEXT_PUBLIC_OAUTH2_CLIENT_SECRET!
   const redirectUri = process.env.NEXT_PUBLIC_OAUTH2_REDIRECT_URI!
 
   try {
@@ -144,6 +145,9 @@ async function exchangeCodeForTokens(
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+
+        // Basic Authentication type for this client
+        "Authorization": `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
       },
       body: tokenParams.toString(),
     })
